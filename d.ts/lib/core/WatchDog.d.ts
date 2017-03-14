@@ -12,7 +12,8 @@ export declare class WatchDog {
     private logger;
     private lastKicks;
     constructor(config: Configuration, scheduler: Scheduler);
-    start(logger: ILogger, pluginManager: PluginManager): void;
+    setLogger(logger: ILogger): void;
+    start(pluginManager: PluginManager): void;
     registerPlugin(name: string): IWatchdogKicker;
     private checkForDeadPlugins();
     shutdown(): void;

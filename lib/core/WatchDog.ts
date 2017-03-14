@@ -21,13 +21,18 @@ export class WatchDog {
     constructor(private config: Configuration, private scheduler: Scheduler) {
     }
 
-    start(logger: ILogger, pluginManager: PluginManager) {
+    setLogger(logger: ILogger) {
         this.logger = logger;
+    }
+
+    start(pluginManager: PluginManager) {
         this.pluginManager = pluginManager;
+        this.logger.info('Watchdog starting up');
         this.scheduler.registerCallback(() => this.checkForDeadPlugins(), this, checkInterval * 1000);
     }
 
     registerPlugin(name: string): IWatchdogKicker {
+        this.logger.info(`Plugin [${name}] registered with the watchdog`);
         this.lastKicks.set(name, moment());
         return () => this.lastKicks.set(name, moment());
     }

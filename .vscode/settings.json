@@ -2,6 +2,7 @@
 {
     "files.exclude": {
         "bin": true,
-        "*.tgz" : true
+        "*.tgz" : true,
+        "d.ts" : true
     }
 }

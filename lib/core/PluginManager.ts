@@ -22,12 +22,13 @@ export class PluginManager implements IPluginManager {
     private settingsGetterFactory: SettingsGetterFactory;
 
     constructor(private config: Configuration, private mongo: MongoConnection, private watchdog: WatchDog) {
-        this.settingsGetterFactory = new SettingsGetterFactory(this.logger, this.mongo);
+        
     }
 
 
     load(logger: ILogger, rootLogger: AppLogger, container: ReflectiveInjector) {
         this.logger = logger;
+        this.settingsGetterFactory = new SettingsGetterFactory(this.logger, this.mongo);
         this.rootLogger = rootLogger;
 
         this.logger.info(`Loading plugins from node_modules`);
