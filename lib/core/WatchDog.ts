@@ -13,17 +13,17 @@ export interface IWatchdogKicker {
 }
 
 @Injectable()
-export class WatchDog  {
+export class WatchDog {
+    private pluginManager: PluginManager;
     private logger: ILogger;
     private lastKicks: Map<string, moment.Moment> = new Map();
 
-    constructor(private config: Configuration,
-        private scheduler: Scheduler,
-        private pluginManager: PluginManager) {
+    constructor(private config: Configuration, private scheduler: Scheduler) {
     }
 
-    start(logger: ILogger) {
+    start(logger: ILogger, pluginManager: PluginManager) {
         this.logger = logger;
+        this.pluginManager = pluginManager;
         this.scheduler.registerCallback(() => this.checkForDeadPlugins(), this, checkInterval * 1000);
     }
 

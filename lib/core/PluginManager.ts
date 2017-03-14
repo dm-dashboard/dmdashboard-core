@@ -1,3 +1,4 @@
+import { WatchDog } from './WatchDog';
 import { SettingsGetterFactory } from './SettingsGetter';
 import { ILogger, AppLogger } from './AppLogger';
 import { MongoConnection } from './MongoConnection';
@@ -8,35 +9,41 @@ import * as fs from 'fs';
 import { ReflectiveInjector, Injectable, FactoryProvider } from 'injection-js';
 
 export interface IPluginManager {
-    load(logger: ILogger, rootLogger : AppLogger, container : ReflectiveInjector);
+    load(logger: ILogger, rootLogger: AppLogger, container: ReflectiveInjector);
     shutdown();
 }
 
 @Injectable()
 export class PluginManager implements IPluginManager {
+        rootLogger: AppLogger;
 
     private loadedPlugins: Map<string, IPlugin> = new Map();
     private logger: ILogger;
     private settingsGetterFactory: SettingsGetterFactory;
 
-    constructor(private config: Configuration, private mongo: MongoConnection) {
+    constructor(private config: Configuration, private mongo: MongoConnection, private watchdog: WatchDog) {
         this.settingsGetterFactory = new SettingsGetterFactory(this.logger, this.mongo);
     }
 
 
-    load(logger: ILogger, rootLogger : AppLogger, container : ReflectiveInjector) {
+    load(logger: ILogger, rootLogger: AppLogger, container: ReflectiveInjector) {
         this.logger = logger;
+        this.rootLogger = rootLogger;
 
         this.logger.info(`Loading plugins from node_modules`);
         this.config.plugins.forEach(plugin => this.loadPlugin(plugin, container));
 
         for (let pluginName of this.loadedPlugins.keys()) {
-            let plugin = this.loadedPlugins.get(pluginName);
-            plugin.init(rootLogger.fork(`${pluginName}`), this.settingsGetterFactory.getInstance(plugin));
+            this.initPlugin(pluginName);
         };
     }
 
-    private loadPlugin(name: string, container : ReflectiveInjector) {
+    private initPlugin(pluginName: string) {
+        let plugin = this.loadedPlugins.get(pluginName);
+        plugin.init(this.rootLogger.fork(`${pluginName}`), this.settingsGetterFactory.getInstance(plugin), this.watchdog.registerPlugin(pluginName));
+    }
+
+    private loadPlugin(name: string, container: ReflectiveInjector) {
         this.logger.info(`Loading plugin [${name}]`);
         let factoryType = (require(name)).default;
         let pluginInstance = container.resolveAndInstantiate(new factoryType() as FactoryProvider) as IPlugin;
@@ -44,8 +51,7 @@ export class PluginManager implements IPluginManager {
     }
 
     restartPlugin(name: string) {
-        let plugin = this.loadedPlugins.get(name);
-        plugin.init(this.logger.fork(`plugin-${name}`), this.settingsGetterFactory.getInstance(plugin));
+        this.initPlugin(name);
     }
 
     shutdown() {

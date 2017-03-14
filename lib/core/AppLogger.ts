@@ -10,8 +10,8 @@ const tagWidth = 20;
 export interface ILogger {
     fork(name: string): ILogger;
     info(message: string);
-    error(message: string);
-    debug(message: string, error?: any);
+    error(message: string, error?: any);
+    debug(message: string);
 }
 
 @Injectable()
