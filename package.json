@@ -1,5 +1,5 @@
 {
-  "name": "dmdashboard-core",
+  "name": "dm-dashboard-core",
   "version": "1.1.2",
   "description": "Type definitions to build against when developing plugins for DMDashboard",
   "main": "./bin/index.js",
