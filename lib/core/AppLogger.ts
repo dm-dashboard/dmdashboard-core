@@ -10,7 +10,8 @@ const tagWidth = 20;
 export interface ILogger {
     fork(name: string): ILogger;
     info(message: string);
-    error(message: string, error?: any);
+    error(message: string);
+    errorException(message: string, exception: Error);
     debug(message: string);
 }
 
@@ -63,8 +64,11 @@ export class AppLogger  implements ILogger {
             debug(message: string) {
                 parent.debug(message, padFunction(name, tagWidth));
             },
-            error(message: string, error?: any) {
-                parent.error(message, error, padFunction(name, tagWidth));
+            error(message: string) {
+                parent.error(message, padFunction(name, tagWidth));
+            },
+            errorException(message: string, error: Error) {
+                parent.errorException(message, error, padFunction(name, tagWidth));
             },
             fork: (n: string) => this
         };
@@ -79,7 +83,11 @@ export class AppLogger  implements ILogger {
         this.logger.debug(`[${tag ? tag : this.coreTag}] ${typeof message === 'string' ? message : JSON.stringify(message)}`);
     }
 
-    error(message: string, tag?: string, error?: any) {
+    error(message: string, tag?: string) {
+        this.logger.error(`[${tag ? tag : this.coreTag}] ${typeof message === 'string' ? message : JSON.stringify(message)}`);
+    }
+
+    errorException(message: string, error: Error, tag?: string) {
         this.logger.error(`[${tag ? tag : this.coreTag}] ${typeof message === 'string' ? message : JSON.stringify(message)}`, error);
     }
 }
