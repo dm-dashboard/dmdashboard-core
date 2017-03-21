@@ -5,7 +5,9 @@
   "main": "./bin/index.js",
   "types": "./d.ts/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build" : "tsc",
+    "test": "mocha bin/tests/**/*.js",
+    "test:auto": "mocha --watch bin/tests/**/*.js"
   },
   "repository": {
     "type": "git",
