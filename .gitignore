@@ -10,35 +10,6 @@ Icon
 .Trashes
 
 # --------------------
-# Eclipse or Nodeclipse "Enide Studio" Files
-# --------------------
-# recommended to add to Git SCM
-# or generate with `nodeclipse -p` command
-.project
-.settings/
-.*.md.html
-
-
-# --------------------
-# IntelliJ Files
-# --------------------
-*.iml
-*.ipr
-*.iws
-.idea/*
-
-# --------------------
-# Netbeans Files
-# --------------------
-nbproject/private/
-build/
-nbbuild/
-#dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml
-
-# --------------------
 # Node Files
 # --------------------
 .nodemonignore
@@ -71,5 +42,4 @@ modules/views/
 *.swp
 
 logs/*
-bin/
-#dev-plugins/
+
