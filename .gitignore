@@ -42,4 +42,5 @@ modules/views/
 *.swp
 
 logs/*
+*.js.map
 
