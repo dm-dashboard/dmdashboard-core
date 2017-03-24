@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 function wrapRestCall(clientOrFunction, name, url, method) {
     var restFunction = clientOrFunction;
     if (name && url && method) {

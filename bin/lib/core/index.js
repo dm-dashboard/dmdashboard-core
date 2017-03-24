@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var WatchDog_1 = require("./WatchDog");
 exports.WatchDog = WatchDog_1.WatchDog;
 var AppLogger_1 = require("./AppLogger");

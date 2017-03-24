@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 class SettingsGetterFactory {
     constructor(logger, mongo) {
         this.logger = logger;
